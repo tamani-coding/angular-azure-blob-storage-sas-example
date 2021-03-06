@@ -21,18 +21,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadImages()
-    this.reloadVideos()
   }
 
   public imageSelected(file: File) {
     this.blobService.uploadImage(file, file.name, () => {
       this.reloadImages()
-    })
-  }
-
-  public videoSelected(file: File) {
-    this.blobService.uploadVideo(file, file.name, () => {
-      this.reloadVideos()
     })
   }
 
@@ -42,9 +35,10 @@ export class AppComponent implements OnInit {
     })
   }
 
-  public deleteVideo (name: string) {
-    this.blobService.deleteVideo(name, () => {
-      this.reloadVideos()
+  public downloadImage (name: string) {
+    this.blobService.downloadImage(name, blob => {
+      let url = window.URL.createObjectURL(blob);
+      window.open(url);
     })
   }
 
@@ -63,12 +57,6 @@ export class AppComponent implements OnInit {
           }
         })
       }
-    })
-  }
-
-  private reloadVideos() {
-    this.blobService.listVideos().then(list => {
-      this.videosList = list
     })
   }
 }

@@ -7,21 +7,16 @@ import { BlobServiceClient, ContainerClient } from '@azure/storage-blob';
 export class AzureBlobStorageService {
 
   // Enter your storage account name
-  account = "<>";
+  picturesAccount = "<>";
   // SAS (shared access signatures)
   picturesSas = "<>";
-  videosSas = "<>";
 
   picturesContainer = "pictures";
-  videosContainer = "videos";
   picturesContainerClient: ContainerClient;
-  videosContainerClient: ContainerClient;
 
   constructor() {
-    this.picturesContainerClient = new BlobServiceClient(`https://${this.account}.blob.core.windows.net?${this.picturesSas}`)
+    this.picturesContainerClient = new BlobServiceClient(`https://${this.picturesAccount}.blob.core.windows.net?${this.picturesSas}`)
       .getContainerClient(this.picturesContainer);
-    this.videosContainerClient = new BlobServiceClient(`https://${this.account}.blob.core.windows.net?${this.videosSas}`)
-      .getContainerClient(this.videosContainer);
   }
 
   // +IMAGES
@@ -41,24 +36,6 @@ export class AzureBlobStorageService {
     this.deleteBlob(name, this.picturesContainerClient, handler)
   }
   // -IMAGES
-
-  // +VIDEOS
-  public uploadVideo(content: Blob, name: string, handler: () => void) {
-    this.uploadBlob(content, name, this.videosContainerClient, handler)
-  }
-
-  public listVideos(): Promise<string[]> {
-    return this.listBlobs(this.videosContainerClient)
-  }
-
-  public downloadVideo(name: string, handler: (blob: Blob) => void) {
-    this.downloadBlob(name, this.videosContainerClient, handler)
-  }
-
-  public deleteVideo(name: string, handler: () => void) {
-    this.deleteBlob(name, this.videosContainerClient, handler)
-  }
-  // -VIDEOS
 
   private uploadBlob(content: Blob, name: string, client: ContainerClient, handler: () => void) {
     let blockBlobClient = client.getBlockBlobClient(name);

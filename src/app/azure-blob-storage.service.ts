@@ -63,6 +63,6 @@ export class AzureBlobStorageService {
 
   private containerClient(sas: string): ContainerClient {
     return new BlobServiceClient(`https://${this.picturesAccount}.blob.core.windows.net?${sas}`)
-      .getContainerClient(this.picturesContainer);
+            .getContainerClient(this.picturesContainer);
   }
 }

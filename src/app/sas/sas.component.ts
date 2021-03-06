@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class SasComponent implements OnInit {
 
   // SAS (shared access signatures)
-  sas = "<>";
+  sas = "";
 
   picturesList: string[] = [];
   picturesDownloaded: string[] = []

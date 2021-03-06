@@ -8,32 +8,24 @@ export class AzureBlobStorageService {
 
   // Enter your storage account name
   picturesAccount = "<>";
-  // SAS (shared access signatures)
-  picturesSas = "<>";
-
+  // container name
   picturesContainer = "pictures";
-  picturesContainerClient: ContainerClient;
-
-  constructor() {
-    this.picturesContainerClient = new BlobServiceClient(`https://${this.picturesAccount}.blob.core.windows.net?${this.picturesSas}`)
-      .getContainerClient(this.picturesContainer);
-  }
 
   // +IMAGES
-  public uploadImage(content: Blob, name: string, handler: () => void) {
-    this.uploadBlob(content, name, this.picturesContainerClient, handler)
+  public uploadImage(sas: string, content: Blob, name: string, handler: () => void) {
+    this.uploadBlob(content, name, this.containerClient(sas), handler)
   }
 
-  public listImages(): Promise<string[]> {
-    return this.listBlobs(this.picturesContainerClient)
+  public listImages(sas: string): Promise<string[]> {
+    return this.listBlobs(this.containerClient(sas))
   }
 
-  public downloadImage(name: string, handler: (blob: Blob) => void) {
-    this.downloadBlob(name, this.picturesContainerClient, handler)
+  public downloadImage(sas: string, name: string, handler: (blob: Blob) => void) {
+    this.downloadBlob(name, this.containerClient(sas), handler)
   }
 
-  public deleteImage(name: string, handler: () => void) {
-    this.deleteBlob(name, this.picturesContainerClient, handler)
+  public deleteImage(sas: string, name: string, handler: () => void) {
+    this.deleteBlob(name, this.containerClient(sas), handler)
   }
   // -IMAGES
 
@@ -67,5 +59,10 @@ export class AzureBlobStorageService {
     client.deleteBlob(name).then(() => {
       handler()
     })
+  }
+
+  private containerClient(sas: string): ContainerClient {
+    return new BlobServiceClient(`https://${this.picturesAccount}.blob.core.windows.net?${sas}`)
+      .getContainerClient(this.picturesContainer);
   }
 }

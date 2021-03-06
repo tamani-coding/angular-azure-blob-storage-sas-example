@@ -1,0 +1,12 @@
+<h2>Pictures with SAS</h2>
+<input type="file" (change)="imageSelected($event.target.files[0])">
+<h4>List</h4>
+<table>
+  <tr *ngFor="let pic of picturesList">
+    <td>{{pic}}</td>
+    <td><button (click)="deleteImage(pic)">DELETE</button></td>
+    <td><button (click)="downloadImage(pic)" download="pic">DOWNLOAD</button></td>
+  </tr>
+</table>
+<h4>Downloaded</h4>
+<img *ngFor="let blob of picturesDownloaded" src="{{blob}}" height="100px">

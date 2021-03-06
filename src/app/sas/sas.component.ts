@@ -25,6 +25,10 @@ export class SasComponent implements OnInit {
     this.reloadImages()
   }
 
+  public setSas(event) {
+    this.sas = event.target.value
+  }
+
   public imageSelected(file: File) {
     this.blobService.uploadImage(this.sas, file, file.name, () => {
       this.reloadImages()

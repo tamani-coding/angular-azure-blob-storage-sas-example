@@ -1,5 +1,9 @@
 <h2>Pictures with SAS</h2>
 <input type="file" (change)="imageSelected($event.target.files[0])">
+<br>
+Insert SAS: <input type="text" (change)="setSas($event)" width="900">
+<br>
+Current SAS: {{sas}}
 <h4>List</h4>
 <table>
   <tr *ngFor="let pic of picturesList">
